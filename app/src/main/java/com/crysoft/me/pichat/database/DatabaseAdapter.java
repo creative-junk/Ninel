@@ -165,6 +165,8 @@ public class DatabaseAdapter {
         }
         return null;
     }
+
+
     public void addAllGroups(List<UserDetails> list){
         Cursor cursor = db.query(TABLE_GROUPS, new String[]{
                 KEY_GROUP_ID,KEY_GROUP_NAME,KEY_GROUP_IMAGE,KEY_GROUP_ADMIN_ID,
@@ -185,6 +187,8 @@ public class DatabaseAdapter {
             }while (cursor.moveToNext());
         }
     }
+
+
 
     public static final String TABLE_GROUP_MEMBERS = "group_members";
 
@@ -235,8 +239,14 @@ public class DatabaseAdapter {
         return list;
 
     }
+    private void setUserMessage(UserDetails userDetails) {
+    }
+    private void openForReading() {
+    }
 
     public class DatabaseHelper {
 
     }
+
+
 }
