@@ -185,6 +185,14 @@ public class UserDetails implements Parcelable{
         this.isAdmin = isAdmin;
     }
 
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
+    }
+
     @Override
     public String toString() {
         return name;
