@@ -101,6 +101,14 @@ public class MessageModel implements Parcelable {
         this.id = id;
     }
 
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
     public int getMessageType() {
         return messageType;
     }
