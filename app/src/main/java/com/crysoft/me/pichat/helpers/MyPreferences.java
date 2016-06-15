@@ -39,13 +39,13 @@ public class MyPreferences {
         userDetails.setStatus(sharedPreferences.getString(Pref.USER_STATUS, null));
         return userDetails;
     }
-    public boolean isStepOneDone(){
+    public boolean stepOneIsDone(){
         return sharedPreferences.getBoolean(Pref.REGISTER_STEP_ONE, false);
     }
-    public boolean isStepTwoDone(){
+    public boolean stepTwoIsDone(){
         return sharedPreferences.getBoolean(Pref.REGISTER_STEP_TWO, false);
     }
-    public boolean isStepThreeDone(){
+    public boolean stepThreeIsDone(){
         return sharedPreferences.getBoolean(Pref.REGISTER_STEP_THREE, false);
     }
 }

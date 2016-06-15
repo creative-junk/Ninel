@@ -1,13 +1,31 @@
 package com.crysoft.me.pichat;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crysoft.me.pichat.fragments.RegisterFragment;
+import com.crysoft.me.pichat.fragments.RegisterStepThree;
+import com.crysoft.me.pichat.fragments.VerifyFragment;
+import com.crysoft.me.pichat.helpers.Constants;
+import com.crysoft.me.pichat.helpers.Constants.Pref;
 import com.crysoft.me.pichat.helpers.MyPreferences;
+import com.crysoft.me.pichat.helpers.helpers;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.File;
+import java.io.IOException;
 
 public class RegisterActivity extends FragmentActivity {
 
@@ -25,15 +43,59 @@ public class RegisterActivity extends FragmentActivity {
         setContentView(R.layout.activity_register);
 
         preferences = new MyPreferences(this);
-       // getGCMId();
+        getGCMId();
 
-        if (preferences.isStepThreeDone()){
+        if (preferences.stepThreeIsDone()){
             startActivity(new Intent(this,RecentChats.class));
             finish();
-        }else if (preferences.isStepTwoDone()){
-           // addFragment(new Reg)
+        }else if (preferences.stepTwoIsDone()){
+            addFragment(new RegisterStepThree(),true);
+        }else if (preferences.stepOneIsDone()){
+            addFragment(new VerifyFragment(), true);
+        }else{
+            addFragment(new RegisterFragment(),true);
+        }
+
+        File file = new File(helpers.getBasePath());
+        if (!file.exists()){
+            file.mkdir();
         }
     }
+
+    public void addFragment(Fragment fragment, boolean animate) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        if (animate){
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left,R.anim.slide_in_right,R.anim.slide_out_left);
+
+        }
+        fragmentTransaction.replace(R.id.fragmentContainer,fragment);
+        fragmentTransaction.commit();
+
+    }
+
+    private void getGCMId() {
+        regId = getRegistrationId(this);
+        if (regId.length() == 0){
+         registerInBackground();
+        }
+    }
+
+    private void registerInBackground() {
+        Void [] params = null;
+        new RegisterGCMId().execute(params);
+    }
+
+    private String getRegistrationId(Context context) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String registrationId = preferences.getString(Pref.GCM_ID,"");
+        if (registrationId.length() == 0){
+            return "";
+        }
+        return registrationId;
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,5 +117,49 @@ public class RegisterActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class RegisterGCMId extends AsyncTask<Void, Void, Void> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(RegisterActivity.this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                regId = gcm.register(Constants.SENDER_ID);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+
+            if (regId.length() == 0){
+                registerInBackground();
+            }else{
+                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(RegisterActivity.this);
+                Editor editor = sharedPreferences.edit();
+                editor.putString(Pref.GCM_ID,regId);
+                editor.commit();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

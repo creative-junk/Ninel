@@ -29,6 +29,7 @@ public class Constants {
         public static final String REGISTER_STEP_ONE = "register_one";
         public static final String REGISTER_STEP_TWO =  "register_two";
         public static final String REGISTER_STEP_THREE = "register_three";
+        public static final String GCM_ID = "gcm_id";
 
         //Storage for Current UserDetails Details
         public static final String USER_ID   =      "user_id";

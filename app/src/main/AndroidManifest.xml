@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.crysoft.me.pichat" >
 
+    <!-- GCM Specific Permissions -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,6 +30,10 @@
         <activity
             android:name=".RecentChats"
             android:label="@string/title_activity_recent_chats" >
+        </activity>
+        <activity
+            android:name=".CountryCodesActivity"
+            android:label="@string/title_activity_country_codes" >
         </activity>
     </application>
 

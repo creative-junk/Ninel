@@ -1,8 +1,12 @@
 package com.crysoft.me.pichat.fragments;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.crysoft.me.pichat.CountryCodesActivity;
+import com.crysoft.me.pichat.Network.AHttpRequest;
+import com.crysoft.me.pichat.Network.AHttpResponse;
+import com.crysoft.me.pichat.Network.RequestCallback;
 import com.crysoft.me.pichat.R;
+import com.crysoft.me.pichat.RegisterActivity;
+import com.crysoft.me.pichat.helpers.Constants.Extra;
 import com.crysoft.me.pichat.helpers.helpers;
+
+import org.json.JSONException;
+
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends BaseRegisterFragment {
+public class RegisterFragment extends BaseRegisterFragment implements RequestCallback {
 
     private static final String TAG = "RegisterFragment";
     private static final int PHONE_CODE_INT = 100;
@@ -82,9 +96,68 @@ public class RegisterFragment extends BaseRegisterFragment {
         //is all good, proceed
         progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait");
 
-      //  AHttpRequest request = new AhttpRequest(getActivity(),this);
+       AHttpRequest request = new AHttpRequest(getActivity(),this);
+       request.registerUser(btnPhoneCode.getText().toString().trim(), etNo.getText().toString().trim(), ((RegisterActivity) getActivity()).regId, TimeZone.getDefault().getID());
     }
-    private void onRegisterCodeClicked(){
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == PHONE_CODE_INT){
+            btnPhoneCode.setText(data.getExtras().getString(Extra.CODES));
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+
+    private void onRegisterCodeClicked(){
+        Intent i = new Intent(getActivity(), CountryCodesActivity.class);
+        startActivityForResult(i, PHONE_CODE_INT);
+    }
+
+    @Override
+    public void onRequestComplete(AHttpResponse response) {
+        if (getActivity() == null){
+            return;
+        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+        });
+        if (response != null){
+            if (response.isSuccess){
+                try{
+                    storePhoneNumber(response.getRootObject().getString("old_phone"));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                setStepAsComplete(1);
+                showUserSuccessDialog(response.message);
+                RegisterActivity activity = (RegisterActivity) getActivity();
+                activity.addFragment(new VerifyFragment(),true);
+            }else{
+                
+            }
+        }
+    }
+
+    private void showUserSuccessDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                RegisterActivity activity = (RegisterActivity) getActivity();
+                activity.addFragment(new VerifyFragment(),true);
+            }
+        });
+    }
+
+
 }
