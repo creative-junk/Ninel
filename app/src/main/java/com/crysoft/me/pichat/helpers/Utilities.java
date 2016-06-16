@@ -24,7 +24,7 @@ import java.util.Date;
  * Created by Maxx on 6/14/2016.
  */
 @SuppressLint("SimpleDateFormat")
-public class helpers {
+public class Utilities {
     public static final void showNoInternetConnection(Context context) {
         Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
@@ -46,7 +46,7 @@ public class helpers {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public String getRealPathFromURI(Uri contentURI, Activity context) {
+    public static String getRealPathFromURI(Uri contentURI, Activity context) {
         String[] projection = {MediaStore.Images.Media.DATA};
 
         Cursor cursor = context.managedQuery(contentURI, projection, null, null, null);
@@ -59,6 +59,7 @@ public class helpers {
         }
         return null;
     }
+
 
     public static String getCurrentTimeInFormat() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");

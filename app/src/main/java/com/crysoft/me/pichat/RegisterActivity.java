@@ -21,7 +21,7 @@ import com.crysoft.me.pichat.fragments.VerifyFragment;
 import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.Constants.Pref;
 import com.crysoft.me.pichat.helpers.MyPreferences;
-import com.crysoft.me.pichat.helpers.helpers;
+import com.crysoft.me.pichat.helpers.Utilities;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.File;
@@ -56,7 +56,7 @@ public class RegisterActivity extends FragmentActivity {
             addFragment(new RegisterFragment(),true);
         }
 
-        File file = new File(helpers.getBasePath());
+        File file = new File(Utilities.getBasePath());
         if (!file.exists()){
             file.mkdir();
         }

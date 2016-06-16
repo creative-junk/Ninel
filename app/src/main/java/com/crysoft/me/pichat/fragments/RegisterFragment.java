@@ -21,7 +21,7 @@ import com.crysoft.me.pichat.Network.RequestCallback;
 import com.crysoft.me.pichat.R;
 import com.crysoft.me.pichat.RegisterActivity;
 import com.crysoft.me.pichat.helpers.Constants.Extra;
-import com.crysoft.me.pichat.helpers.helpers;
+import com.crysoft.me.pichat.helpers.Utilities;
 
 import org.json.JSONException;
 
@@ -89,8 +89,8 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
             return;
         }
         //No use continuing if there is no internet connection
-        if (!helpers.isOnline(getActivity())){
-            helpers.showToast("No Internet Connection",getActivity());
+        if (!Utilities.isOnline(getActivity())){
+            Utilities.showToast("No Internet Connection", getActivity());
             return;
         }
         //is all good, proceed

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.crysoft.me.pichat.RegisterActivity">
+    tools:context="com.crysoft.me.pichat.RegisterActivity"
+    android:background="@drawable/mainbg">
     <LinearLayout
         android:id="@+id/signup_txt"
         android:layout_width="match_parent"

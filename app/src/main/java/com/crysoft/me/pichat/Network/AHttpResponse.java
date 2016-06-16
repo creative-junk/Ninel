@@ -1,6 +1,6 @@
 package com.crysoft.me.pichat.Network;
 
-import com.crysoft.me.pichat.helpers.helpers;
+import com.crysoft.me.pichat.helpers.Utilities;
 import com.crysoft.me.pichat.models.GroupDetailsModel;
 import com.crysoft.me.pichat.models.MessageModel;
 import com.crysoft.me.pichat.models.UserDetails;
@@ -109,7 +109,7 @@ public class AHttpResponse {
             JSONObject object = rootObject.getJSONObject("details");
             model.setMessageId(object.getInt("id"));
 
-            String milli_sec = helpers.convertDateIntoLocalMillis(object.getString("time"));
+            String milli_sec = Utilities.convertDateIntoLocalMillis(object.getString("time"));
 
             Calendar calendar = Calendar.getInstance();
             month = calendar.get(Calendar.MONTH)+ 1;
