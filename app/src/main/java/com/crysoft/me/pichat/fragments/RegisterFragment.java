@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.crysoft.me.pichat.CountryCodesActivity;
-import com.crysoft.me.pichat.Network.AHttpRequest;
 import com.crysoft.me.pichat.Network.AHttpResponse;
 import com.crysoft.me.pichat.Network.RequestCallback;
 import com.crysoft.me.pichat.R;
@@ -24,8 +24,6 @@ import com.crysoft.me.pichat.helpers.Constants.Extra;
 import com.crysoft.me.pichat.helpers.Utilities;
 
 import org.json.JSONException;
-
-import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,8 +39,6 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
     private ProgressDialog progressDialog;
 
 
-
-
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -52,7 +48,7 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        contentView =  inflater.inflate(R.layout.fragment_register, container, false);
+        contentView = inflater.inflate(R.layout.register, container, false);
         findViewById(R.id.btn_register).setOnClickListener(this);
         etNo = (EditText) findViewById(R.id.et_no_register);
         btnPhoneCode = (Button) findViewById(R.id.btn_phone_code);
@@ -65,7 +61,7 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_phone_code:
                 onRegisterCodeClicked();
                 break;
@@ -77,32 +73,44 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
 
         }
     }
-    private void onRegisterClick(){
+
+    private void onRegisterClick() {
         boolean isValid = true;
 
-        if (etNo.getText().toString().trim().length() == 0){
-            etNo.setError("Enter Your No");
+        if (etNo.getText().toString().trim().length() == 0) {
+            etNo.setError("Please Enter Your Phone Number");
             isValid = false;
         }
         //If the number is not valid, no need to continue
-        if (!isValid){
+        if (!isValid) {
             return;
         }
         //No use continuing if there is no internet connection
-        if (!Utilities.isOnline(getActivity())){
+        if (!Utilities.isOnline(getActivity())) {
             Utilities.showToast("No Internet Connection", getActivity());
+            Log.i("NetInfo: ","No connection Should Exit");
             return;
-        }
-        //is all good, proceed
-        progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait");
+        } else {
+            Log.i("NetInfo: ","There is connection Should Continue");
+            //is all good, proceed
+            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait");
 
-       AHttpRequest request = new AHttpRequest(getActivity(),this);
-       request.registerUser(btnPhoneCode.getText().toString().trim(), etNo.getText().toString().trim(), ((RegisterActivity) getActivity()).regId, TimeZone.getDefault().getID());
+            Register(btnPhoneCode.getText().toString().trim(),etNo.getText().toString().trim());
+        }
+    }
+
+    private void Register(String countryCode, String phoneNumber) {
+         /*
+            AHttpRequest request = new AHttpRequest(getActivity(), this);
+            request.registerUser(btnPhoneCode.getText().toString().trim(),
+                    etNo.getText().toString().trim(), ((RegisterActivity) getActivity()).regId,
+                    TimeZone.getDefault().getID());
+                    */
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == PHONE_CODE_INT){
+        if (resultCode == Activity.RESULT_OK && requestCode == PHONE_CODE_INT) {
             btnPhoneCode.setText(data.getExtras().getString(Extra.CODES));
         }
 
@@ -110,15 +118,14 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
     }
 
 
-
-    private void onRegisterCodeClicked(){
+    private void onRegisterCodeClicked() {
         Intent i = new Intent(getActivity(), CountryCodesActivity.class);
         startActivityForResult(i, PHONE_CODE_INT);
     }
 
     @Override
     public void onRequestComplete(AHttpResponse response) {
-        if (getActivity() == null){
+        if (getActivity() == null) {
             return;
         }
         getActivity().runOnUiThread(new Runnable() {
@@ -129,19 +136,19 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
                 }
             }
         });
-        if (response != null){
-            if (response.isSuccess){
-                try{
+        if (response != null) {
+            if (response.isSuccess) {
+                try {
                     storePhoneNumber(response.getRootObject().getString("old_phone"));
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 setStepAsComplete(1);
                 showUserSuccessDialog(response.message);
                 RegisterActivity activity = (RegisterActivity) getActivity();
-                activity.addFragment(new VerifyFragment(),true);
-            }else{
-                
+                activity.addFragment(new VerifyFragment(), true);
+            } else {
+
             }
         }
     }
@@ -154,7 +161,7 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 RegisterActivity activity = (RegisterActivity) getActivity();
-                activity.addFragment(new VerifyFragment(),true);
+                activity.addFragment(new VerifyFragment(), true);
             }
         });
     }

@@ -9,9 +9,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,9 +28,10 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import java.io.File;
 import java.io.IOException;
 
-public class RegisterActivity extends FragmentActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG ="RegisterActivity";
+    private Toolbar mToolBar;
 
     public String regId;
     public MyPreferences preferences;
@@ -40,10 +42,14 @@ public class RegisterActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.fragment_container);
+
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolBar);
 
         preferences = new MyPreferences(this);
-        getGCMId();
+       // getGCMId();
 
         if (preferences.stepThreeIsDone()){
             startActivity(new Intent(this,RecentChats.class));

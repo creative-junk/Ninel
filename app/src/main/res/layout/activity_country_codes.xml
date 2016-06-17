@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.crysoft.me.pichat.CountryCodesActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
     <LinearLayout
         android:id="@+id/country_code_layout"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
+        android:background="@color/gray_d"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -16,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="85"
-            android:background="@android:color/darker_gray">
+            android:background="@color/gray_e">
 
             <RelativeLayout
                 android:id="@+id/progress_loader_layout"
@@ -49,7 +52,7 @@
                 android:id="@+id/country_code_editText_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/darker_gray"
+                android:background="@color/gray_a"
                 android:paddingBottom="1dp">
 
                 <RelativeLayout
@@ -62,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:hint="Search by Name"
+                        android:hint="Search Country by Name"
                         android:inputType="textNoSuggestions"
                         android:lines="1"
                         android:padding="10dp" />

@@ -33,7 +33,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        contentView = inflater.inflate(R.layout.fragment_verify, container, false);
+        contentView = inflater.inflate(R.layout.verify, container, false);
 
         findViewById(R.id.iv_user_picture).setVisibility(View.GONE);
         etVerifyCode = (EditText) findViewById(R.id.et_display_name);
