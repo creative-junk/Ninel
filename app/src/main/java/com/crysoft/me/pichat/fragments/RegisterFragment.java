@@ -93,13 +93,13 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
         } else {
             Log.i("NetInfo: ","There is connection Should Continue");
             //is all good, proceed
-            progressDialog = ProgressDialog.show(getActivity(), "Loading...", "Please Wait");
+            progressDialog = ProgressDialog.show(getActivity(), "Registering...", "Please Wait");
 
-            Register(btnPhoneCode.getText().toString().trim(),etNo.getText().toString().trim());
+            register(btnPhoneCode.getText().toString().trim(),etNo.getText().toString().trim());
         }
     }
 
-    private void Register(String countryCode, String phoneNumber) {
+    private void register(String countryCode, String phoneNumber) {
          /*
             AHttpRequest request = new AHttpRequest(getActivity(), this);
             request.registerUser(btnPhoneCode.getText().toString().trim(),
