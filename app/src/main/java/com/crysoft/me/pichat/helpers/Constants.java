@@ -8,12 +8,32 @@ public class Constants {
 
     //GCM Constants
     public static final String SENDER_ID = "808457187436";
+    //Sync constants
+    public static final String ACCOUNT_TYPE = "com.crysoft.me";
+    public static final String ACCOUNT_NAME = "PichatAccount";
+    public static final String ACCOUNT_TOKEN = "12345";
+    public static final String ACCOUNT_TYPE_FULL_ACCESS = "Full Access";
+
+
+    // SMS provider identification
+    // It should match with your SMS gateway origin
+    // You can use  MSGIND, TESTER and ALERTS as sender ID
+    // If you want custom sender Id, approve MSG91 to get one
+    public static final String SMS_ORIGIN = "PICHAT";
+
+    // special character to prefix the otp. Make sure this character appears only once in the sms
+    public static final String OTP_DELIMITER = ":";
 
     public static final String ROOT_FOLDER_NAME ="PiChat";
     public static final String FOLDER_IMAGE ="PiChat Images";
     public static final String PROFILE_PICTURES ="Pichat Profiles Photos";
 
     public static final String STICKER_DIR = "Pichat Stickers";
+
+    public static boolean IS_WINDOW_OPEN = false;
+
+    public static int UNREAD_MSG = 0;
+    public static int READ_MSG = 1;
 
     public static final class Extra{
         public static final String CODES ="codes";

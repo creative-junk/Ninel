@@ -33,4 +33,5 @@
     <!-- Photo sizes -->
     <dimen name="photo_height">120dp</dimen>
     <dimen name="photo_width">120dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -305,12 +305,21 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
             return;
         }
 
-        progressDialog = ProgressDialog.show(getActivity(), "Loading...","Please Wait");
-        AHttpRequest aHttpRequest = new AHttpRequest(getActivity(),this);
-        aHttpRequest.editProfile(myUserDetails.getUserId()+"",etName.getText().toString().trim(),
-                myUserDetails.getStatus(),image,myUserDetails.getPhoneCode(),myUserDetails.getPhoneNumber());
+        progressDialog = ProgressDialog.show(getActivity(), "Creating" + name + "'s Profile...","Please Wait");
+        updateProfile(name);
 
     }
+
+    private void updateProfile(String name) {
+        /*AHttpRequest aHttpRequest = new AHttpRequest(getActivity(),this);
+        aHttpRequest.editProfile(myUserDetails.getUserId()+"",etName.getText().toString().trim(),
+                myUserDetails.getStatus(),image,myUserDetails.getPhoneCode(),myUserDetails.getPhoneNumber());*/
+        if (progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+        startActivity(new Intent(getActivity(), RecentChats.class));
+    }
+
     @Override
     public void onRequestComplete(AHttpResponse response) {
         if (progressDialog != null && progressDialog.isShowing()){

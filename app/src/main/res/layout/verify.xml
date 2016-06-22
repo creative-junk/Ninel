@@ -7,7 +7,7 @@
         android:id="@+id/title_header"
         style="@style/title_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
@@ -34,16 +34,28 @@
             android:layout_marginTop="23dp"
             android:background="@drawable/user_images" />
 
+        <TextView
+            android:id="@+id/codeText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_user_picture"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:text="Sit back and relax while we verify you phone number. Enter the Code below if we fail to detect the SMS automatically"
+            android:visibility="invisible" />
+
         <EditText
             android:id="@+id/et_display_name"
             style="@style/editext_register_style"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_user_picture"
+            android:layout_below="@id/codeText"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="26dp"
             android:ems="10"
-            android:hint="Display Name"
+            android:textColor="@android:color/black"
+            android:hint="Your Name"
+            android:textColorHint="@android:color/darker_gray"
             android:paddingLeft="3dp">
 
             <requestFocus />
@@ -51,11 +63,12 @@
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/et_display_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:background="@color/primary_color"
             android:gravity="center"
             android:text="Save"
             android:textAppearance="?android:attr/textAppearanceMedium"

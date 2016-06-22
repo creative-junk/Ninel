@@ -2,8 +2,15 @@ package com.crysoft.me.pichat.fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.crysoft.me.pichat.Network.AHttpRequest;
 import com.crysoft.me.pichat.Network.AHttpResponse;
 import com.crysoft.me.pichat.Network.RequestCallback;
 import com.crysoft.me.pichat.R;
 import com.crysoft.me.pichat.RegisterActivity;
+import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.Utilities;
 
 /**
@@ -23,6 +30,7 @@ import com.crysoft.me.pichat.helpers.Utilities;
  */
 public class VerifyFragment extends BaseRegisterFragment implements RequestCallback {
     private EditText etVerifyCode;
+    private SMSReceiver smsReceiver;
 
     public VerifyFragment() {
         // Required empty public constructor
@@ -35,6 +43,10 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
         // Inflate the layout for this fragment
         contentView = inflater.inflate(R.layout.verify, container, false);
 
+
+
+        findViewById(R.id.codeText).setVisibility(View.VISIBLE);
+
         findViewById(R.id.iv_user_picture).setVisibility(View.GONE);
         etVerifyCode = (EditText) findViewById(R.id.et_display_name);
         etVerifyCode.setHint("Verification Code");
@@ -43,14 +55,32 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
         btnVerify.setOnClickListener(this);
 
         TextView tvTitle = (TextView) findViewById(R.id.title_tv);
-        tvTitle.setText("Verify");
+        tvTitle.setText("SMS Verification");
+
+
+
         return contentView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(smsReceiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        IntentFilter smsFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        smsReceiver = new SMSReceiver();
+        getActivity().registerReceiver(smsReceiver, smsFilter);
+    }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_save) {
+            progressDialog = ProgressDialog.show(getActivity(),"Verifying...","Please Wait");
             onVerify();
         }
     }
@@ -59,7 +89,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
 
     private void onVerify() {
         if (etVerifyCode.getText().toString().trim().length() != 0) {
-            if (!Utilities.isOnline(getActivity())){
+            /*if (!Utilities.isOnline(getActivity())){
                 Utilities.showNoInternetConnection(getActivity());
                 return;
             }
@@ -67,7 +97,12 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
             progressDialog = ProgressDialog.show(getActivity(),"Loading...","Please Wait");
 
             AHttpRequest request = new AHttpRequest(getActivity(),this);
-            request.verifyUser(getPhoneNumber(),etVerifyCode.getText().toString().trim(),((RegisterActivity) getActivity()).regId);
+            request.verifyUser(getPhoneNumber(),etVerifyCode.getText().toString().trim(),((RegisterActivity) getActivity()).regId);*/
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            RegisterActivity activity = (RegisterActivity) getActivity();
+            activity.addFragment(new RegisterStepThree(), true);
         }else{
             etVerifyCode.setError("Verification Code");
         }
@@ -95,5 +130,63 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
                 }
             }
         });
+    }
+    public class SMSReceiver extends BroadcastReceiver {
+        public final String TAG ="SMS Receiver";
+        // Get the object of SmsManager
+        final SmsManager sms = SmsManager.getDefault();
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final Bundle bundle = intent.getExtras();
+
+            try{
+                if (bundle != null){
+                    //Protocol Data Unit(pdus) basically SMS
+                    Object[] pdusObject = (Object[]) bundle.get("pdus");
+                    for (Object aPdusObject : pdusObject){
+                        SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) aPdusObject);
+                        String senderAddress = currentMessage.getDisplayOriginatingAddress();
+                        String message = currentMessage.getDisplayMessageBody();
+
+                        Log.i(TAG, "Received SMS: " + message + ", Sender: " + senderAddress);
+                        /*
+                        if (!senderAddress.toLowerCase().contains(Constants.SMS_ORIGIN.toLowerCase())){
+                            return;
+                        }
+                        */
+                        String verificationCode = getVerificationCode(message);
+                        Log.i(TAG, "OTP received: " + verificationCode);
+
+
+                        RegisterActivity activity = (RegisterActivity) getActivity();
+                        activity.addFragment(new RegisterStepThree(), true);
+
+                    }
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * Get the OTP from the message Body
+         * look for ":" which is the code delimiter
+         * @param message
+         * @return OTP Code
+         */
+        private String getVerificationCode(String message) {
+            String code = null;
+            int index = message.indexOf(Constants.OTP_DELIMITER);
+
+            if (index != -1){
+                int start = index + 2;
+                int length = 6;
+                code = message.substring(start,start + length);
+                return code;
+            }
+            return code;
+        }
     }
 }

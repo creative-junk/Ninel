@@ -106,6 +106,12 @@ public class RegisterFragment extends BaseRegisterFragment implements RequestCal
                     etNo.getText().toString().trim(), ((RegisterActivity) getActivity()).regId,
                     TimeZone.getDefault().getID());
                     */
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        RegisterActivity activity = (RegisterActivity) getActivity();
+        activity.addFragment(new VerifyFragment(), true);
+
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AHttpRequest {
     }
 
     public void registerUser(final String code, final String mobile, final String regId, final String timezone) {
-        if (Utilities.isOnline(context)) {
+        if (!Utilities.isOnline(context)) {
             Utilities.showNoInternetConnection(context);
             return;
         }
