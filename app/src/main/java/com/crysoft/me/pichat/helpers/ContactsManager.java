@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Maxx on 6/22/2016.
  */
 public class ContactsManager {
-    private static final String MIMETYPE = "com.crysoft.me.pichat";
+    private static final String MIMETYPE = "vnd.android.cursor.item/com.crysoft.me";
     public static void addContact(Context context, MyContact contact, MyContact phone){
         ContentResolver contentResolver = context.getContentResolver();
 

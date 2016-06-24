@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +22,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.crysoft.me.pichat.Network.AHttpRequest;
 import com.crysoft.me.pichat.adapter.FavouriteListAdapter;
 import com.crysoft.me.pichat.adapter.PastChatsAdapter;
 import com.crysoft.me.pichat.database.DatabaseAdapter;
 import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.MyPreferences;
 import com.crysoft.me.pichat.models.UserDetails;
-import com.crysoft.me.pichat.services.ContactUpdateService;
-import com.crysoft.me.pichat.services.StickerManageServices;
+
+
 
 import java.util.List;
 
@@ -94,7 +92,7 @@ public class RecentChats extends AppCompatActivity implements AdapterView.OnItem
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(RecentChats.this,NewChatActivity.class);
                 UserDetails userDetails = pastChats.get(position);
-                if (userDetails.getUserId() == myDetails.getUserId()){
+                if (userDetails.getParseUserId() == myDetails.getParseUserId()){
                     return;
                 }
                 intent.putExtra(Constants.Extra.FRIEND_DETAILS,pastChats.get(position));
@@ -126,10 +124,9 @@ public class RecentChats extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void synchContacts() {
-        Intent intent = new Intent(this, ContactUpdateService.class);
-        startService(intent);
-        intent = new Intent(this,StickerManageServices.class);
-        startService(intent);
+      /*  Intent intent = new Intent(this, ContactUpdateService.class);
+        startService(intent);*/
+
 
     }
     private void updateGroupDetails() {
@@ -268,7 +265,7 @@ public class RecentChats extends AppCompatActivity implements AdapterView.OnItem
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add("Delete Chat");
     }
-
+/*
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AHttpRequest request = new AHttpRequest();
@@ -292,4 +289,5 @@ public class RecentChats extends AppCompatActivity implements AdapterView.OnItem
 
         return super.onContextItemSelected(item);
     }
+    */
 }

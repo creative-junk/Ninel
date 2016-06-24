@@ -6,7 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -18,17 +20,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.crysoft.me.pichat.Network.AHttpResponse;
-import com.crysoft.me.pichat.Network.RequestCallback;
 import com.crysoft.me.pichat.R;
 import com.crysoft.me.pichat.RegisterActivity;
 import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.Utilities;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VerifyFragment extends BaseRegisterFragment implements RequestCallback {
+public class VerifyFragment extends BaseRegisterFragment {
     private EditText etVerifyCode;
     private SMSReceiver smsReceiver;
 
@@ -80,7 +86,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_save) {
-            progressDialog = ProgressDialog.show(getActivity(),"Verifying...","Please Wait");
+            //progressDialog = ProgressDialog.show(getActivity(),"Verifying...","Please Wait");
             onVerify();
         }
     }
@@ -89,15 +95,16 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
 
     private void onVerify() {
         if (etVerifyCode.getText().toString().trim().length() != 0) {
-            /*if (!Utilities.isOnline(getActivity())){
+            if (!Utilities.isOnline(getActivity())){
                 Utilities.showNoInternetConnection(getActivity());
                 return;
             }
 
-            progressDialog = ProgressDialog.show(getActivity(),"Loading...","Please Wait");
-
+            progressDialog = ProgressDialog.show(getActivity(),"Verifying...","Please Wait");
+            /*
             AHttpRequest request = new AHttpRequest(getActivity(),this);
             request.verifyUser(getPhoneNumber(),etVerifyCode.getText().toString().trim(),((RegisterActivity) getActivity()).regId);*/
+
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -108,7 +115,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
         }
 
     }
-
+/*
     @Override
     public void onRequestComplete(final AHttpResponse response) {
         getActivity().runOnUiThread(new Runnable() {
@@ -120,7 +127,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
                 if (response != null) {
                     if (response.isSuccess){
                         setStepAsComplete(2);
-                        ((RegisterActivity) getActivity()).addFragment(new RegisterStepThree(),true);
+                        ((RegisterActivity) getActivity()).addFragment(new RegisterStepThree(), true);
                     }else{
                         Utilities.showToast(response.message, getActivity());
                     }
@@ -130,7 +137,7 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
                 }
             }
         });
-    }
+    }*/
     public class SMSReceiver extends BroadcastReceiver {
         public final String TAG ="SMS Receiver";
         // Get the object of SmsManager
@@ -159,15 +166,34 @@ public class VerifyFragment extends BaseRegisterFragment implements RequestCallb
                         String verificationCode = getVerificationCode(message);
                         Log.i(TAG, "OTP received: " + verificationCode);
 
-
-                        RegisterActivity activity = (RegisterActivity) getActivity();
-                        activity.addFragment(new RegisterStepThree(), true);
+                        VerifyCode(verificationCode);
 
                     }
                 }
             } catch (Exception e){
                 e.printStackTrace();
             }
+        }
+
+        private void VerifyCode(String verificationCode) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            String phoneNumber = preferences.getString("phoneNumber", "");
+
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.whereEqualTo("code",verificationCode);
+            query.whereEqualTo("number",phoneNumber);
+            query.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if (e==null){
+
+                        setStepAsComplete(2);
+                        ((RegisterActivity) getActivity()).addFragment(new RegisterStepThree(),true);
+                    }else{
+
+                    }
+                }
+            });
         }
 
         /**

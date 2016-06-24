@@ -161,7 +161,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="play-services-vision-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-9.0.2" level="project" />
-    <orderEntry type="library" exported="" name="org.jbundle.util.osgi.wrapped.org.apache.http.client-4.1.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-fitness-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-appindexing-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-9.0.2" level="project" />
@@ -178,6 +177,7 @@
     <orderEntry type="library" exported="" name="firebase-auth-module-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-common-9.0.2" level="project" />
+    <orderEntry type="library" exported="" name="bolts-tasks-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="animated-vector-drawable-24.0.0-alpha2" level="project" />
     <orderEntry type="library" exported="" name="play-services-analytics-impl-9.0.2" level="project" />
@@ -205,8 +205,9 @@
     <orderEntry type="library" exported="" name="play-services-tagmanager-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-24.0.0-alpha2" level="project" />
-    <orderEntry type="library" exported="" name="play-services-cast-9.0.2" level="project" />
+    <orderEntry type="library" exported="" name="parse-android-1.13.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-9.0.2" level="project" />
+    <orderEntry type="library" exported="" name="play-services-cast-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="firebase-database-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="mediarouter-v7-23.0.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-iid-9.0.2" level="project" />
@@ -215,6 +216,5 @@
     <orderEntry type="library" exported="" name="play-services-maps-9.0.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-identity-9.0.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="org.apache.http.legacy-android-23" level="project" />
   </component>
 </module>

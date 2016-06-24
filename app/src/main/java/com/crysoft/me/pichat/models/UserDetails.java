@@ -9,6 +9,7 @@ import android.os.Parcelable;
 public class UserDetails implements Parcelable{
     //UserDetails ID & the Message ID
     private int userId, messageId;
+    private String parseUserId;
     //The UserDetails Details we interested in
     private String name, image, phoneNumber,phoneCode,status,lastMessage,messageTime;
 
@@ -44,6 +45,7 @@ public class UserDetails implements Parcelable{
     };
     public UserDetails(Parcel in){
         userId = in.readInt();
+        parseUserId = in.readString();
         messageId = in.readInt();
         name = in.readString();
         image = in.readString();
@@ -68,6 +70,7 @@ public class UserDetails implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(userId);
         dest.writeInt(messageId);
+        dest.writeString(parseUserId);
         dest.writeString(name);
         dest.writeString(image);
         dest.writeString(phoneCode);
@@ -88,7 +91,13 @@ public class UserDetails implements Parcelable{
     public void setUserId(int userId) {
         this.userId = userId;
     }
+    public int getParseUserId() {
+        return userId;
+    }
 
+    public void setParseUserId(String parseUserId) {
+        this.parseUserId = parseUserId;
+    }
     public int getMessageId() {
         return messageId;
     }

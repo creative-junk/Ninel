@@ -36,13 +36,18 @@ public class RegisterActivity extends AppCompatActivity {
     public String regId;
     public MyPreferences preferences;
 
-    private GoogleCloudMessaging gcm;
 
+
+    private GoogleCloudMessaging gcm;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
+
+        user = new User();
+
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -66,6 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (!file.exists()){
             file.mkdir();
         }
+    }
+    public User getCurrentUser(){
+        return user;
     }
 
     public void addFragment(Fragment fragment, boolean animate) {

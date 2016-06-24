@@ -6,6 +6,7 @@
     android:layout_margin="0dp"
     android:orientation="vertical"
     tools:context="com.crysoft.me.pichat.RegisterActivity">
+
     <LinearLayout
         android:id="@+id/registerTitle_header"
         style="@style/title_bg"
@@ -27,16 +28,16 @@
         android:id="@+id/signup_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/registerTitle_header"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_below="@+id/registerTitle_header">
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select your Country Code and enter your phone number. We will send you an SMS with a verification code that you'll need to enter on the next screen." />
+            android:text="Select your Country Code,your phone number and choose a password. We will send you an SMS with a verification code that you'll need to enter on the next screen." />
 
     </LinearLayout>
 
@@ -71,17 +72,37 @@
             android:paddingLeft="3dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"></EditText>
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/passwordLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/phone_number"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Lock Code"
+            android:inputType="numberPassword" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordLayout"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <Button
             android:id="@+id/btn_register"
@@ -90,16 +111,16 @@
             android:background="@color/primary_color"
             android:text="Continue"
             android:textColor="@android:color/white" />
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Standard SMS charges may apply."
-            android:layout_marginTop="26dp"
-            android:id="@+id/textView"
             android:layout_below="@+id/phone_number"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:text="Standard SMS charges may apply." />
     </LinearLayout>
-
 
 
 </RelativeLayout>

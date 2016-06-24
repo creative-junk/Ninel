@@ -7,11 +7,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,19 +22,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.androidquery.AQuery;
 import com.androidquery.util.AQUtility;
-import com.crysoft.me.pichat.Network.AHttpRequest;
-import com.crysoft.me.pichat.Network.AHttpResponse;
-import com.crysoft.me.pichat.Network.RequestCallback;
-import com.crysoft.me.pichat.Network.Urls;
 import com.crysoft.me.pichat.R;
 import com.crysoft.me.pichat.RecentChats;
 import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.MyPreferences;
 import com.crysoft.me.pichat.helpers.Utilities;
 import com.crysoft.me.pichat.models.UserDetails;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,7 +45,7 @@ import java.io.IOException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterStepThree extends BaseRegisterFragment implements RequestCallback {
+public class RegisterStepThree extends BaseRegisterFragment {
     private static final String TAG = "Step 3";
 
     private static final String IMAGE_DIRECTORY_NAME = Constants.ROOT_FOLDER_NAME;
@@ -55,6 +58,7 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
     private EditText etName;
 
     private UserDetails myUserDetails;
+    private ParseFile parseFile;
     private String image;
 
     private static String filePath;
@@ -99,8 +103,9 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
             etName.setText(myUserDetails.getName());
         }
 
-        AQuery aQuery = new AQuery(getActivity());
+       /* AQuery aQuery = new AQuery(getActivity());
         aQuery.id(ivUserImage).image(Urls.BASE_IMAGE + myUserDetails.getImage());
+        */
 
         return contentView;
     }
@@ -119,6 +124,12 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
                             @Override
                             public void run() {
                                 ivUserImage.setImageBitmap(photoBitmap);
+
+                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                                byte[] scaledData = bos.toByteArray();
+
+                                parseFile = new ParseFile(String.valueOf(photoBitmap), scaledData);
                             }
                         });
                     } else if (getActivity() != null) {
@@ -272,15 +283,15 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
                         + myUserDetails.getUserId() + ".jpg");
                 createIfNotDirectory();
 
-                if (file.exists()){
+                if (file.exists()) {
                     file.delete();
                 }
-                try{
+                try {
                     file.createNewFile();
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
                     fileOutputStream.write(bos.toByteArray());
                     fileOutputStream.close();
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -290,46 +301,89 @@ public class RegisterStepThree extends BaseRegisterFragment implements RequestCa
     private void createIfNotDirectory() {
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + IMAGE_DIRECTORY_NAME);
 
-        if (file.exists()){
+        if (file.exists()) {
             return;
-        } else{
+        } else {
             file.mkdir();
         }
     }
-    private void onSaveClick(){
+
+    private void onSaveClick() {
         String name = etName.getText().toString().trim().length() == 0 ?
                 myUserDetails.getName() : etName.getText().toString().trim();
 
-        if (name.length() ==0){
+
+        if (name.length() == 0) {
             etName.setError("Display Name");
             return;
         }
 
-        progressDialog = ProgressDialog.show(getActivity(), "Creating" + name + "'s Profile...","Please Wait");
-        updateProfile(name);
+        progressDialog = ProgressDialog.show(getActivity(), "Initializing...", "Please Wait");
+        loginUser(name,image);
+        updateProfile(name, image);
 
     }
 
-    private void updateProfile(String name) {
+    private void updateProfile(String name, String image) {
         /*AHttpRequest aHttpRequest = new AHttpRequest(getActivity(),this);
         aHttpRequest.editProfile(myUserDetails.getUserId()+"",etName.getText().toString().trim(),
                 myUserDetails.getStatus(),image,myUserDetails.getPhoneCode(),myUserDetails.getPhoneNumber());*/
-        if (progressDialog != null && progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
+
+        progressDialog = ProgressDialog.show(getActivity(), "Creating" + name + "'s Profile...", "Please Wait");
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put("display_name", name);
+        user.put("profile_image", image);
+        user.put("remote_image", parseFile);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Update Failed, Please try again", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        setStepAsComplete(3);
         startActivity(new Intent(getActivity(), RecentChats.class));
     }
 
-    @Override
-    public void onRequestComplete(AHttpResponse response) {
-        if (progressDialog != null && progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
+    private void loginUser(final String displayName, final String profileImage) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String username = preferences.getString("username", "");
+        String password = preferences.getString("password", "");
+        if (ParseUser.getCurrentUser() == null) {
+            ParseUser.logInInBackground(username, password, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    if (e == null) {
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                        String username = preferences.getString("username", "");
+                        String password = preferences.getString("password", "");
 
-        if (response != null && response.isSuccess){
-            setStepAsComplete(3);
-            startActivity(new Intent(getActivity(), RecentChats.class));
-            getActivity().finish();
+                        UserDetails userDetails = new UserDetails();
+                        userDetails.setParseUserId(ParseUser.getCurrentUser().getObjectId());
+                        userDetails.setName(displayName);
+                        userDetails.setStatus("Hey");
+                        userDetails.setImage(profileImage);
+                        userDetails.setPhoneCode(preferences.getString("phoneCode", ""));
+                        userDetails.setPhoneNumber(preferences.getString("phoneNumber", ""));
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Update Failed, Please try again", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } else {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
+
+
 }
