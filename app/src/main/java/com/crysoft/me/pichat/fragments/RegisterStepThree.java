@@ -332,8 +332,9 @@ public class RegisterStepThree extends BaseRegisterFragment {
         progressDialog = ProgressDialog.show(getActivity(), "Creating" + name + "'s Profile...", "Please Wait");
         ParseUser user = ParseUser.getCurrentUser();
         user.put("display_name", name);
+        //TODO The image doesn't get saved so Parse gets a Null reference. Solve this issue
         user.put("profile_image", image);
-        user.put("remote_image", parseFile);
+//        user.put("remote_image", parseFile);
         user.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

@@ -120,8 +120,8 @@ public class RegisterFragment extends BaseRegisterFragment{
                     */
         String timezone = TimeZone.getDefault().getID();
         String verificationCode = generateVerificationCode().toString();
-        String email = countryCode + phoneNumber;
-        String username = countryCode + phoneNumber + "@crysoft.me";
+        String email = countryCode + phoneNumber + "@crysoft.me";
+        String username = countryCode + phoneNumber;
 
         ParseUser user = new ParseUser();
         user.setUsername(username);
@@ -150,7 +150,7 @@ public class RegisterFragment extends BaseRegisterFragment{
                     RegisterActivity activity = (RegisterActivity) getActivity();
                     activity.addFragment(new VerifyFragment(), true);
                 }else{
-                    Toast.makeText(getActivity().getApplicationContext(), "Registration Failed.Please Try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });

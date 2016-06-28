@@ -400,7 +400,9 @@ public class DatabaseAdapter {
 
     public List<UserDetails> getPastChats() {
         List<UserDetails> list = new ArrayList<UserDetails>();
-
+        if (!isOpen()) {
+            openForReading();
+        }
         Cursor cursor = db.query(TABLE_USERS, new String[]{KEY_ID,
                 KEY_NAME, KEY_IMAGE, KEY_PHONE_CODE, KEY_PHONE_NO, KEY_STATUS,
                 KEY_LAST_MESSAGE}, KEY_LAST_MESSAGE + "!=0", null, null, null, null);

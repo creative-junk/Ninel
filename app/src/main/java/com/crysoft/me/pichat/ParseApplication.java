@@ -1,3 +1,5 @@
+package com.crysoft.me.pichat;
+
 import android.app.Application;
 
 import com.crysoft.me.pichat.Message;

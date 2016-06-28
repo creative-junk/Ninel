@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-        user = new User();
+
 
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
@@ -72,9 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
             file.mkdir();
         }
     }
-    public User getCurrentUser(){
-        return user;
-    }
+    
 
     public void addFragment(Fragment fragment, boolean animate) {
         FragmentManager manager = getSupportFragmentManager();

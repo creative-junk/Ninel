@@ -15,16 +15,16 @@
     <color name="gray_a">#A0A0A0</color>
     <color name="gray_bg">#E3E3E3</color>
 
-    <color name="primary_color">#009688</color>
+    <color name="primary_color">#11588a</color>
     <color name="alternate_primary_color">#1ba8ae</color>
     <color name="optional_color">#03a588</color>
     <!-- <color name="ColorPrimary">#5c3bb5</color> -->
     <!-- Deep Purple 700 -->
-    <color name="ColorPrimary">#30b998</color>
-    <color name="ColorPrimaryDark">#03a285</color>
+    <color name="ColorPrimary">#11588a</color>
+    <color name="ColorPrimaryDark">#0b4a73</color>
     <color name="textColorPrimary">#fff</color>
     <color name="navigationBarColor">#30b998</color>
-    <color name="colorAccent">#30b998</color>
+    <color name="colorAccent">#0b4a73</color>
 
     <color name="black_overlay">#66000000</color>
 
