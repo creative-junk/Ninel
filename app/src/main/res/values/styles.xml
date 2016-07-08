@@ -13,6 +13,10 @@
         <item name="android:windowContentOverlay">@null</item> -->
 
     </style>
+    <!-- Splash Screen Theme -->
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
     <!-- Theme with Toolbar -->
     <style name="BarTheme" parent="Theme.AppCompat.DayNight">
 
@@ -97,5 +101,9 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:textColor">@color/light_green</item>
     </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

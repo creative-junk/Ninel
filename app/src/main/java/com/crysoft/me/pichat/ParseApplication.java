@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crysoft.me.pichat.Message;
 import com.crysoft.me.pichat.User;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 /**
@@ -29,5 +30,7 @@ public class ParseApplication extends Application {
                 .server("http://khaotic.herokuapp.com/parse/")
                 .build()
         );
+        // Need to register GCM token
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 }

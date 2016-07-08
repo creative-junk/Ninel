@@ -23,7 +23,7 @@ import com.crysoft.me.pichat.helpers.Constants;
 import com.crysoft.me.pichat.helpers.Constants.Pref;
 import com.crysoft.me.pichat.helpers.MyPreferences;
 import com.crysoft.me.pichat.helpers.Utilities;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+//import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-    private GoogleCloudMessaging gcm;
+   // private GoogleCloudMessaging gcm;
     private User user;
 
     @Override
@@ -145,11 +145,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            try{
+            /*try{
                 regId = gcm.register(Constants.SENDER_ID);
             } catch (IOException e){
                 e.printStackTrace();
-            }
+            }*/
             return null;
         }
 

@@ -11,4 +11,6 @@
     <string name="title_activity_country_codes">Country Codes</string>
     <string name="title_activity_new_chat">NewChatActivity</string>
     <string name="title_activity_authenticator">AuthenticatorActivity</string>
+    <string name="title_activity_splash_">Splash_Activity</string>
+    <string name="title_activity_contacts">Contacts</string>
 </resources>

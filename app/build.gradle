@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-   // useLibrary 'org.apache.http.legacy'
+    // useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.crysoft.me.pichat"
@@ -28,11 +28,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
     compile group: 'com.googlecode.android-query', name: 'android-query', version: '0.25.9'
+    //  compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.13.0'
     compile 'com.parse:parseui-login-android:0.0.1'
     compile 'com.parse:parseui-widget-android:0.0.1'
     compile 'com.android.support:appcompat-v7:24.0.0-alpha2'
-    compile 'com.google.android.gms:play-services:9.0.2'
-  //  compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.3.0'
+
 }

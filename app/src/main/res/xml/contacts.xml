@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ContactsSource xmlns:android="http://schemas.android.com/apk/res/android">
     <ContactsDataKind
-        android:mimeType="vnd.android.cursor.item/com.crysoft.me"
+        android:mimeType="vnd.android.cursor.item/vnd.com.crysoft.me"
         android:icon="@mipmap/ic_launcher"
         android:summaryColumn="data2"
         android:detailColumn="data3" />

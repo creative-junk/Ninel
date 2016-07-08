@@ -7,14 +7,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.crysoft.me.pichat.RecentChats">
+        tools:context="com.crysoft.me.pichat.Contacts">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
         <ListView
-            android:id="@+id/chat_list"
+            android:id="@+id/contacts_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"></ListView>
@@ -37,28 +37,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Once you start a new conversation, you'll see it listed here" />
+                android:text="There are no contacts" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|center">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_margin="16dp"
-                android:clickable="true"
-                android:src="@drawable/ic_plus"
-                app:elevation="6dp"
-                app:pressedTranslationZ="24dp" />
-
-
-        </LinearLayout>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

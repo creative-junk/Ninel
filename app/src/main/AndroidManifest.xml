@@ -19,6 +19,14 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <permission
+        android:name="com.crysoft.me.pichat.permission.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.crysoft.me.pichat.permission.C2D_MESSAGE" />
 
     <application
         android:name=".ParseApplication"
@@ -28,16 +36,29 @@
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="khratos"/>
+            android:value="khratos" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="r153ofth3n00b5"/>
+            android:value="r153ofth3n00b5" />
+        <meta-data
+            android:name="com.parse.push.gcm_sender_id"
+            android:value="id:khaotic-1359" />
 
+        <activity
+            android:name=".Splash_Activity"
+            android:label="@string/title_activity_splash_"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".RegisterActivity"
             android:label="Pi Chat"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,9 +67,9 @@
         </activity>
         <activity
             android:name=".RecentChats"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".CountryCodesActivity"
             android:label="@string/title_activity_country_codes"
@@ -56,13 +77,77 @@
         <activity
             android:name=".NewChatActivity"
             android:label="@string/title_activity_new_chat"
+            android:parentActivityName=".RecentChats"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RecentChats" />
+        </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_new_chat"
             android:theme="@style/AppTheme" />
-
-
         <activity
             android:name=".AuthenticatorActivity"
             android:label="@string/title_activity_authenticator"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Contacts"
+            android:label="@string/title_activity_contacts"
             android:theme="@style/AppTheme"></activity>
+
+        <service android:name="com.parse.PushService" />
+
+        <receiver
+            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.cd2m.intent.RECEIVE" />
+                <action android:name="com.google.android.cd2m.intent.REGISTRATION" />
+
+                <category android:name="com.crysoft.me.pichat" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".sync.ContactsSyncAdapterService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=".contacts">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.name.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+            <meta-data
+                android:name="android.provider.CONTACTS_STRUCTURE"
+                android:resource="@xml/contacts" />
+        </service>
+        <service
+            android:name=".sync.AuthenticationService"
+            android:exported="true"
+            android:process=".auth">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+
     </application>
 
 </manifest>

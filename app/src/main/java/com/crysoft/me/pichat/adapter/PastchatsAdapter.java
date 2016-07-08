@@ -70,7 +70,13 @@ public class PastChatsAdapter extends BaseAdapter {
         }
 
         UserDetails userDetails = list.get(position);
-        aQuery.id(viewHolder.ivImage).image(Urls.BASE_IMAGE + userDetails.getImage());
+        if (userDetails.getImage()==null){
+            aQuery.id(viewHolder.ivImage).background(R.drawable.prof_pic);
+
+        }else {
+            aQuery.id(viewHolder.ivImage).image(Urls.BASE_IMAGE + userDetails.getImage());
+        }
+
         viewHolder.tvName.setText(userDetails.getName());
         viewHolder.tvName.setTextColor(layoutInflater.getContext().getResources().getColor(R.color.black));
 
@@ -82,11 +88,11 @@ public class PastChatsAdapter extends BaseAdapter {
 
         key =userDetails.getUserId() + Constants.Pref.USER_LAST_MSG_STATUS;
 
-        if (sharedPreferences.getInt(key, Constants.READ_MSG) == Constants.READ_MSG){
+        /*if (sharedPreferences.getInt(key, Constants.READ_MSG) == Constants.READ_MSG){
             viewHolder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.double_right,0,0,0);
         }else{
             viewHolder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.button_play,0,0,0);
-        }
+        }*/
 
         return convertView;
     }

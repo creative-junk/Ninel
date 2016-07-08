@@ -3,6 +3,8 @@ package com.crysoft.me.pichat;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.Date;
+
 /**
  * Created by Maxx on 6/23/2016.
  */
@@ -20,12 +22,30 @@ public class Message extends ParseObject {
     public void setUserFromId(String userFromId) {
         put("user_from_id", userFromId);
     }
-
-    public String getStatus() {
-        return getString("status");
+    public String getUserToId() {
+        return getString("user_to_id");
     }
 
-    public void setStatus(String status) {
+    public void setUserToId(String userToId) {
+        put("user_to_id", userToId);
+    }
+    public Date getMessageDate(){
+        return getDate("message_date");
+    }
+    public void setMessageDate(Date sentOn){
+        put("message_date",sentOn);
+    }
+    public boolean getSeparator(){
+        return getBoolean("separator");
+    }
+    public void setSeparator(Boolean state){
+        put("separator",state);
+    }
+    public int getStatus() {
+        return getInt("status");
+    }
+
+    public void setStatus(int status) {
         put("status", status);
     }
 

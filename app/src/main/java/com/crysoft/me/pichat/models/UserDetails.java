@@ -11,7 +11,7 @@ public class UserDetails implements Parcelable{
     private int userId, messageId;
     private String parseUserId;
     //The UserDetails Details we interested in
-    private String name, image, phoneNumber,phoneCode,status,lastMessage,messageTime;
+    private String name, image, phoneNumber,phoneCode,status,lastMessage,messageTime,phoneType;
 
     private boolean isSelected;
 
@@ -91,8 +91,8 @@ public class UserDetails implements Parcelable{
     public void setUserId(int userId) {
         this.userId = userId;
     }
-    public int getParseUserId() {
-        return userId;
+    public String getParseUserId() {
+        return parseUserId;
     }
 
     public void setParseUserId(String parseUserId) {
@@ -205,5 +205,12 @@ public class UserDetails implements Parcelable{
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
+    public String getPhoneType(){
+        return phoneType;
     }
 }

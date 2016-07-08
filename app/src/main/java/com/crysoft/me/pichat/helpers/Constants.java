@@ -9,7 +9,10 @@ public class Constants {
     //GCM Constants
     public static final String SENDER_ID = "808457187436";
     //Sync constants
-    public static final String ACCOUNT_TYPE = "com.crysoft.me";
+    //Account Type String
+    public static final String ACCOUNT_TYPE = "com.crysoft.me.pichat";
+    //Auth Token String
+    public static final String AUTHTOKEN_TYPE = "com.crysoft.me.pichat";
     public static final String ACCOUNT_NAME = "PichatAccount";
     public static final String ACCOUNT_TOKEN = "12345";
     public static final String ACCOUNT_TYPE_FULL_ACCESS = "Full Access";
@@ -34,6 +37,33 @@ public class Constants {
 
     public static int UNREAD_MSG = 0;
     public static int READ_MSG = 1;
+
+    public static final int MESSAGE_TYPE_MESSAGE = 1;
+    public static final int MESSAGE_TYPE_IMAGE = 2;
+    public static final int MESSAGE_TYPE_VIDEO = 3;
+    public static final int MESSAGE_TYPE_LOCATION = 4;
+    public static final int MESSAGE_TYPE_STICKER = 5;
+    public static final int MESSAGE_TYPE_CONTACT = 6;
+
+    //Message Status
+    public static final int STATUS_SENDING = 1;
+    public static final int STATUS_SENT = 2;
+    public static final int STATUS_DELIVERED = 3;
+    public static final int STATUS_DOWNLOADING = 4;
+    public static final int STATUS_UPLOADING = 5;
+
+    //Membership states
+    //1 -   Personal Chat
+    //2 -   Group Chat
+    //3 -   Message Delivered
+    //4 -   Join a group
+    //5 -   Leave a group
+
+    public static final int CHAT_PERSONAL = 1;
+    public static final int CHAT_GROUP = 2;
+    public static final int CHAT_MESSAGE_DELIVERED = 3;
+    public static final int CHAT_JOIN_GROUP = 4;
+    public static final int CHAT_LEAVE_GROUP = 5;
 
     public static final class Extra{
         public static final String CODES ="codes";
